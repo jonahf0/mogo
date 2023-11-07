@@ -9,3 +9,11 @@ edition = "2021"
 termsize = "0.1.6"
 [target.'cfg(windows)'.dependencies]
 winapi-util = "0.1"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+
