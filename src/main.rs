@@ -1,7 +1,10 @@
 use std::{thread, time};
 use termsize;
 
-fn main() {
+fn main() {  
+    
+    #[cfg(windows)]	
+    enable_virtual_terminal_processing();
 
     //gets the terminal size
     let terminal_size: Option<termsize::Size> = termsize::get();
@@ -67,4 +70,16 @@ fn modify_dog_string(dog_string: &str, col_index: u16) -> String{
 
 
     increased_dog.join("\n")
+}
+
+#[cfg(windows)]
+pub fn enable_virtual_terminal_processing() {
+    use winapi_util::console::Console;
+
+    if let Ok(mut term) = Console::stdout() {
+        let _ = term.set_virtual_terminal_processing(true);
+    }
+    if let Ok(mut term) = Console::stderr() {
+        let _ = term.set_virtual_terminal_processing(true);
+    }
 }
